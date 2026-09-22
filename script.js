@@ -140,46 +140,15 @@ gsap.from('.cf-passo',{
   scrollTrigger:{trigger:'.cf-passos',start:'top 82%'}
 });
 
-/* ---------- Carrossel 3D pinado ---------- */
-(function(){
-  const cards = gsap.utils.toArray('.carr-card');
-  const nav = document.getElementById('carrNav');
-  cards.forEach((_,i)=>{
-    const dot = document.createElement('div');
-    dot.className = 'carr-dot'+(i===0?' ativo':'');
-    nav.appendChild(dot);
-  });
-  const dots = gsap.utils.toArray('.carr-dot');
-
-  function setStack(activeIndex){
-    cards.forEach((card,i)=>{
-      const offset = i - activeIndex;
-      gsap.to(card,{
-        z: -Math.abs(offset)*120,
-        y: offset*18,
-        rotateY: offset*10,
-        scale: 1 - Math.abs(offset)*0.08,
-        opacity: Math.abs(offset) > 2 ? 0 : 1 - Math.abs(offset)*0.18,
-        zIndex: 10 - Math.abs(offset),
-        duration:.7,ease:'power3.out'
-      });
-    });
-    dots.forEach((d,i)=> d.classList.toggle('ativo', i===activeIndex));
-  }
-  setStack(0);
-
-  ScrollTrigger.create({
-    trigger:'#carrossel',
-    start:'top top',
-    end:'+=250%',
-    pin:true,
-    scrub:.6,
-    onUpdate(self){
-      const idx = Math.min(cards.length-1, Math.floor(self.progress * cards.length));
-      setStack(idx);
-    }
-  });
-})();
+/* ---------- Feche com a Oxe: cards em stagger ---------- */
+gsap.from('.feche-card',{
+  y:40,opacity:0,duration:.8,stagger:.1,ease:'power3.out',
+  scrollTrigger:{trigger:'.feche-grid',start:'top 82%'}
+});
+gsap.from('.feche-banner',{
+  scale:.96,opacity:0,duration:.9,ease:'power3.out',
+  scrollTrigger:{trigger:'.feche-banner',start:'top 88%'}
+});
 
 /* ---------- Manifesto: linhas se iluminando conforme rola, pinado ---------- */
 (function(){
@@ -325,8 +294,8 @@ ScrollTrigger.create({
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, stage.clientWidth/stage.clientHeight || 1, 0.1, 100);
-  camera.position.set(0, 3.3, 5.3);
-  camera.lookAt(0,0,0);
+  camera.position.set(0, 3.5, 5.6);
+  camera.lookAt(0,-0.15,0);
 
   const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -341,43 +310,142 @@ ScrollTrigger.create({
   resize();
   window.addEventListener('resize', resize);
 
-  scene.add(new THREE.HemisphereLight(0xF9EED1, 0x150E05, 0.75));
-  const key = new THREE.DirectionalLight(0xFF9040, 1.15);
-  key.position.set(3,5,4);
+  // ---------- iluminação em 3 pontos ----------
+  scene.add(new THREE.HemisphereLight(0xF9EED1, 0x150E05, 0.6));
+  scene.add(new THREE.AmbientLight(0xF9EED1, 0.25));
+  const key = new THREE.DirectionalLight(0xFFB066, 1.2);
+  key.position.set(3,5.5,4);
   scene.add(key);
-  const rim = new THREE.PointLight(0xF5C200, 0.9, 20);
-  rim.position.set(-3.5,2.5,-2.5);
+  const fill = new THREE.DirectionalLight(0xF9EED1, 0.35);
+  fill.position.set(-4,2,2);
+  scene.add(fill);
+  const rim = new THREE.PointLight(0xF5C200, 0.75, 20);
+  rim.position.set(-3.5,2.2,-3);
   scene.add(rim);
+
+  // ---------- texturas procedurais (canvas) ----------
+  function canvasTex(draw, size){
+    size = size || 512;
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    draw(c.getContext('2d'), size);
+    const tex = new THREE.CanvasTexture(c);
+    tex.needsUpdate = true;
+    return tex;
+  }
+
+  const cheeseTex = canvasTex((ctx,size)=>{
+    ctx.fillStyle = '#F5C200';
+    ctx.fillRect(0,0,size,size);
+    for(let i=0;i<150;i++){
+      const x = Math.random()*size, y = Math.random()*size, r = 6+Math.random()*22;
+      const g = ctx.createRadialGradient(x,y,0,x,y,r);
+      if(Math.random()<0.55){
+        g.addColorStop(0,'rgba(255,226,130,.6)'); g.addColorStop(1,'rgba(255,226,130,0)');
+      } else {
+        g.addColorStop(0,'rgba(190,112,18,.4)'); g.addColorStop(1,'rgba(190,112,18,0)');
+      }
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+    }
+    const edge = ctx.createRadialGradient(size/2,size/2,size*0.32,size/2,size/2,size*0.5);
+    edge.addColorStop(0,'rgba(0,0,0,0)'); edge.addColorStop(1,'rgba(110,55,10,.45)');
+    ctx.fillStyle = edge;
+    ctx.beginPath(); ctx.arc(size/2,size/2,size*0.5,0,Math.PI*2); ctx.fill();
+  });
+
+  const woodTex = canvasTex((ctx,size)=>{
+    ctx.fillStyle = '#8B5A2B';
+    ctx.fillRect(0,0,size,size);
+    for(let i=0;i<44;i++){
+      const y = Math.random()*size;
+      ctx.strokeStyle = `rgba(58,32,13,${0.12+Math.random()*0.22})`;
+      ctx.lineWidth = 1+Math.random()*3;
+      ctx.beginPath();
+      for(let x=0;x<=size;x+=24){ ctx[x===0?'moveTo':'lineTo'](x, y+Math.sin(x*0.02+i)*7); }
+      ctx.stroke();
+    }
+    const v = ctx.createRadialGradient(size/2,size/2,size*0.2,size/2,size/2,size*0.55);
+    v.addColorStop(0,'rgba(0,0,0,0)'); v.addColorStop(1,'rgba(0,0,0,.35)');
+    ctx.fillStyle = v; ctx.fillRect(0,0,size,size);
+  });
+
+  const shadowTex = canvasTex((ctx,size)=>{
+    const g = ctx.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
+    g.addColorStop(0,'rgba(0,0,0,.55)'); g.addColorStop(0.6,'rgba(0,0,0,.25)'); g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0,0,size,size);
+  });
+
+  const dotTex = canvasTex((ctx,size)=>{
+    const g = ctx.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
+    g.addColorStop(0,'rgba(255,255,255,.85)'); g.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle = g; ctx.fillRect(0,0,size,size);
+  }, 64);
+
+  // ---------- tábua de madeira ----------
+  const board = new THREE.Mesh(
+    new THREE.CylinderGeometry(2.62, 2.7, 0.14, 48),
+    new THREE.MeshStandardMaterial({map:woodTex, roughness:0.85})
+  );
+  board.position.y = -0.22;
+  scene.add(board);
+
+  // sombra de contato (fake AO, mais barato que shadow map real)
+  const contactShadow = new THREE.Mesh(
+    new THREE.PlaneGeometry(5.6,5.6),
+    new THREE.MeshBasicMaterial({map:shadowTex, transparent:true, depthWrite:false})
+  );
+  contactShadow.rotation.x = -Math.PI/2;
+  contactShadow.position.y = -0.145;
+  scene.add(contactShadow);
 
   const pizza = new THREE.Group();
 
-  const crust = new THREE.Mesh(
-    new THREE.TorusGeometry(2.02, 0.27, 18, 60),
-    new THREE.MeshStandardMaterial({color:0xC98A4B, roughness:0.75})
-  );
+  // crosta orgânica — anel levemente irregular, como massa feita à mão
+  const crustGeo = new THREE.TorusGeometry(2.02, 0.27, 20, 90);
+  const cPos = crustGeo.attributes.position;
+  const v3 = new THREE.Vector3();
+  for(let i=0;i<cPos.count;i++){
+    v3.fromBufferAttribute(cPos, i);
+    const theta = Math.atan2(v3.y, v3.x);
+    const noise = Math.sin(theta*3)*0.05 + Math.sin(theta*7+1.3)*0.03 + Math.sin(theta*13+0.4)*0.016;
+    const len = Math.hypot(v3.x, v3.y);
+    if(len > 0.0001){
+      v3.x += (v3.x/len)*noise;
+      v3.y += (v3.y/len)*noise;
+    }
+    cPos.setXYZ(i, v3.x, v3.y, v3.z);
+  }
+  crustGeo.computeVertexNormals();
+  const crust = new THREE.Mesh(crustGeo, new THREE.MeshStandardMaterial({color:0xC98A4B, roughness:0.8}));
   crust.rotation.x = Math.PI/2;
   pizza.add(crust);
 
   const base = new THREE.Mesh(
     new THREE.CylinderGeometry(2.02, 2.02, 0.22, 60),
-    new THREE.MeshStandardMaterial({color:0xE3B072, roughness:0.85})
+    new THREE.MeshStandardMaterial({color:0xE3B072, roughness:0.88})
   );
   pizza.add(base);
 
   const sauce = new THREE.Mesh(
     new THREE.CylinderGeometry(1.82, 1.82, 0.06, 60),
-    new THREE.MeshStandardMaterial({color:0x7A1200, roughness:0.6})
+    new THREE.MeshStandardMaterial({color:0x7A1200, roughness:0.65})
   );
   sauce.position.y = 0.14;
   pizza.add(sauce);
 
   const cheese = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.76, 1.76, 0.05, 60),
-    new THREE.MeshStandardMaterial({color:0xF5C200, roughness:0.5})
+    new THREE.CylinderGeometry(1.76, 1.76, 0.06, 60),
+    new THREE.MeshStandardMaterial({map:cheeseTex, roughness:0.5, bumpMap:cheeseTex, bumpScale:0.015})
   );
-  cheese.position.y = 0.19;
+  cheese.position.y = 0.2;
   pizza.add(cheese);
 
+  function varied(mat, hue, light){
+    const m = mat.clone();
+    m.color.offsetHSL((Math.random()-0.5)*(hue||0.02), 0, (Math.random()-0.5)*(light||0.06));
+    return m;
+  }
   function scatter(count, build){
     for(let i=0;i<count;i++){
       const ang = Math.random()*Math.PI*2;
@@ -388,27 +456,55 @@ ScrollTrigger.create({
     }
   }
 
-  const topMat = new THREE.MeshStandardMaterial({color:0x9C3A12, roughness:0.6});
-  scatter(9, ()=> new THREE.Mesh(new THREE.CylinderGeometry(0.23,0.23,0.06,18), topMat));
+  // rodelas de carne (tipo pepperoni) — leve variação de cor e tamanho
+  const topMat = new THREE.MeshStandardMaterial({color:0x9C3A12, roughness:0.62});
+  scatter(9, ()=>{
+    const s = 0.9 + Math.random()*0.25;
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.22,0.055,18), varied(topMat,0.02,0.1));
+    m.scale.set(s,1,s);
+    m.position.y = 0.245;
+    return m;
+  });
 
+  // cubos de queijo coalho
   const cuboMat = new THREE.MeshStandardMaterial({color:0xF9EED1, roughness:0.4});
   scatter(6, ()=>{
-    const c = new THREE.Mesh(new THREE.BoxGeometry(0.2,0.2,0.2), cuboMat);
+    const c = new THREE.Mesh(new THREE.BoxGeometry(0.19,0.19,0.19), varied(cuboMat,0.01,0.05));
     c.rotation.y = Math.random();
     c.position.y = 0.27;
     return c;
   });
 
-  const pimMat = new THREE.MeshStandardMaterial({color:0xE8620A, roughness:0.5});
-  scatter(6, ()=>{
-    const p = new THREE.Mesh(new THREE.ConeGeometry(0.055,0.2,8), pimMat);
-    p.rotation.z = Math.random()*0.6 - 0.3;
-    p.position.y = 0.3;
-    return p;
+  // ervinhas frescas (orégano/coentro), no lugar da pimenta
+  const herbMat = new THREE.MeshStandardMaterial({color:0x4B6B2A, roughness:0.65, side:THREE.DoubleSide});
+  scatter(16, ()=>{
+    const h = new THREE.Mesh(new THREE.PlaneGeometry(0.1,0.032), varied(herbMat,0.04,0.1));
+    h.rotation.x = -Math.PI/2 + (Math.random()-0.5)*0.4;
+    h.rotation.z = Math.random()*Math.PI;
+    h.position.y = 0.235;
+    return h;
   });
 
   pizza.rotation.x = 0.05;
+  pizza.position.y = -0.02;
   scene.add(pizza);
+
+  // ---------- vapor subindo (pizza saindo do forno) ----------
+  const steamCount = 26;
+  const steamData = [];
+  const steamGeo = new THREE.BufferGeometry();
+  const steamPos = new Float32Array(steamCount*3);
+  for(let i=0;i<steamCount;i++){
+    const ang = Math.random()*Math.PI*2, rad = Math.random()*1.2;
+    steamData.push({ang, rad, speed:0.35+Math.random()*0.35, phase:Math.random()});
+    steamPos[i*3] = Math.cos(ang)*rad;
+    steamPos[i*3+1] = 0.3 + Math.random()*1.6;
+    steamPos[i*3+2] = Math.sin(ang)*rad;
+  }
+  steamGeo.setAttribute('position', new THREE.BufferAttribute(steamPos,3));
+  const steamMat = new THREE.PointsMaterial({map:dotTex, size:0.42, transparent:true, opacity:0.22, depthWrite:false});
+  const steam = new THREE.Points(steamGeo, steamMat);
+  scene.add(steam);
 
   // interação: arrastar para girar
   let isDown = false, prevX = 0, prevY = 0, spin = 0.0032;
@@ -435,6 +531,8 @@ ScrollTrigger.create({
   const io = new IntersectionObserver(entries=>{ visible = entries[0].isIntersecting; }, {threshold:0.15});
   io.observe(stage);
 
+  const clock = new THREE.Clock();
+
   function animate(){
     requestAnimationFrame(animate);
     if(!visible) return;
@@ -443,6 +541,17 @@ ScrollTrigger.create({
       spin *= 0.94;
       if(Math.abs(spin) < 0.0032) spin = 0.0032;
     }
+
+    const dt = Math.min(clock.getDelta(), 0.05);
+    const pos = steam.geometry.attributes.position;
+    for(let i=0;i<steamCount;i++){
+      let y = pos.getY(i) + steamData[i].speed*dt;
+      if(y > 2.1){ y = 0.25; }
+      pos.setY(i, y);
+    }
+    pos.needsUpdate = true;
+    steamMat.opacity = 0.16 + Math.sin(clock.elapsedTime*1.4)*0.05;
+
     renderer.render(scene, camera);
   }
   animate();
