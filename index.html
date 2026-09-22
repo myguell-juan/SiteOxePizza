@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oxe Pizza Fortaleza — Pizza de Evento · Sertão · Fortaleza</title>
+<meta name="description" content="A Oxe Pizza não é delivery, não é restaurante. É presença. A gente só aparece onde vai fazer diferença. Pizza de evento com alma nordestina.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="preloader">
+  <div class="pl-word"><span id="pl-oxe">OXÊ</span></div>
+  <div class="pl-sub">carregando o sertão…</div>
+</div>
+
+<div class="grain"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Sol do Sertão — camada de fundo fixa em 3D (Three.js), paralaxe em toda a página -->
+<div class="sol-fundo" id="solFundo">
+  <canvas id="solCanvas"></canvas>
+</div>
+
+<nav class="nav">
+  <div class="nav-logo">OXE PIZZA</div>
+  <div class="nav-links">
+    <a href="#proposito">Propósito</a>
+    <a href="#valores">Valores</a>
+    <a href="#pizza3d">A Pizza</a>
+    <a href="#carrossel">Instagram</a>
+    <a href="https://instagram.com/oxepizzafortaleza" target="_blank" rel="noopener" class="nav-cta">@oxepizzafortaleza</a>
+    <a href="https://wa.me/5585981120788" target="_blank" rel="noopener" class="nav-cta nav-cta-whats">(85) 98112-0788</a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <svg class="hero-ornamento orn-tl" viewBox="0 0 100 100" fill="none" stroke="#E8620A" stroke-width="1.5">
+    <path d="M50 5 L58 42 L95 50 L58 58 L50 95 L42 58 L5 50 L42 42 Z"/>
+  </svg>
+  <div class="hero-stage">
+    <div class="hero-eyebrow" id="heroEyebrow">✦ Pizza de Evento · Sertão · Fortaleza ✦</div>
+    <h1 class="hero-title">
+      <div class="linha"><span>OXE</span></div>
+      <div class="linha"><span class="laranja-fill">PIZZA</span></div>
+      <div class="linha"><span>FORTALEZA</span></div>
+    </h1>
+    <div class="hero-sub" id="heroSub">
+      <span>Não é delivery.</span><span>Não é restaurante.</span><span>É presença.</span>
+    </div>
+  </div>
+  <svg class="hero-ornamento orn-br" viewBox="0 0 100 100" fill="none" stroke="#E8620A" stroke-width="1.5">
+    <path d="M50 5 L58 42 L95 50 L58 58 L50 95 L42 58 L5 50 L42 42 Z"/>
+  </svg>
+  <div class="hero-scroll">
+    <div class="linha-scroll"></div>
+    <span>role · desce</span>
+  </div>
+</section>
+
+<!-- ================= MARQUEE ================= -->
+<div class="marquee-faixa">
+  <div class="marquee-track" id="marqueeTrack">
+    <span>PIZZA DE EVENTO</span><span>ESTÉTICA SERTÃO</span><span>ALMA NORDESTINA</span>
+    <span>PIZZA DE EVENTO</span><span>ESTÉTICA SERTÃO</span><span>ALMA NORDESTINA</span>
+  </div>
+</div>
+
+<!-- ================= PROPÓSITO ================= -->
+<section class="secao secao-proposito" id="proposito">
+  <div class="wrap">
+    <div class="kicker-num">01 · O Propósito</div>
+    <div class="proposito-grid">
+      <h2 class="editorial-title proposito-titulo reveal-up">Existimos para levar a alma do sertão nordestino pra dentro de cada evento.</h2>
+      <div class="proposito-texto">
+        <p class="reveal-up">A Oxe Pizza não é só comida — é <strong>experiência</strong>. É aquele momento que vira assunto no dia seguinte.</p>
+        <p class="reveal-up">Não somos delivery. Não somos restaurante. Somos <strong>presença</strong>. A gente só aparece onde vai fazer diferença.</p>
+        <p class="reveal-up">Raízes no Ceará, sabor do sertão, orgulho nordestino em cada fatia servida — sem frescura, sem firula.</p>
+        <div class="proposito-badges">
+          <div class="badge-p reveal-up">Foco · Eventos</div>
+          <div class="badge-p reveal-up">Território · Fortaleza · CE</div>
+          <div class="badge-p reveal-up">Essência · Autenticidade</div>
+        </div>
+      </div>
+    </div>
+    <svg class="mandacaru-side" viewBox="0 0 100 220" fill="none" stroke="#8B5A2B" stroke-width="2">
+      <path d="M50 220 L50 40"/>
+      <path d="M50 90 Q20 90 20 60 Q20 40 40 40"/>
+      <path d="M50 130 Q80 130 80 100 Q80 80 60 80"/>
+      <circle cx="50" cy="30" r="8" fill="#F5C200" stroke="none"/>
+    </svg>
+    <div class="quote-bloco reveal-up">
+      <p>"A gente não entrega pizza. A gente entrega o melhor momento do evento."</p>
+      <span>— Posicionamento Oxe Pizza</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VALORES — cards 3D ================= -->
+<section class="secao secao-valores" id="valores">
+  <div class="wrap">
+    <div class="valores-header">
+      <div class="kicker-num">02 · Nossos Valores</div>
+      <h2 class="editorial-title">Se a Oxe Pizza entrasse numa festa, como todo mundo a descreveria?</h2>
+    </div>
+    <div class="valores-cards" id="valoresCards">
+      <div class="valor-card">
+        <div>
+          <div class="valor-num">01 · Raiz</div>
+          <h3>Nordeste no Sangue</h3>
+          <p>A estética, o humor, o tempero — tudo vem do sertão. Não é personagem, é identidade de verdade.</p>
+        </div>
+        <div class="valor-tag">✦ autenticidade</div>
+      </div>
+      <div class="valor-card">
+        <div>
+          <div class="valor-num">02 · Presença</div>
+          <h3>Só onde Importa</h3>
+          <p>Trabalhamos em eventos. Não estamos em todo lugar, mas onde estamos, somos o destaque da festa.</p>
+        </div>
+        <div class="valor-tag">✦ exclusividade</div>
+      </div>
+      <div class="valor-card">
+        <div>
+          <div class="valor-num">03 · Afeto</div>
+          <h3>Feita com Amor</h3>
+          <p>Cada detalhe é feito com cuidado artesanal. Quem come, sente. Quem sente, nunca esquece.</p>
+        </div>
+        <div class="valor-tag">✦ cuidado</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= A PIZZA — cena 3D interativa (Three.js) ================= -->
+<section class="secao secao-pizza3d" id="pizza3d">
+  <div class="wrap">
+    <div class="pizza3d-header">
+      <div class="kicker-num">03 · A Pizza</div>
+      <h2 class="editorial-title">Gira, olha, sente o cheiro — quase.</h2>
+      <p>Arraste com o dedo ou o mouse. É a mesma pizza que chega quente no seu evento, só que agora dá pra rodar ela na tela.</p>
+    </div>
+    <div class="pizza3d-stage" id="pizza3dStage">
+      <canvas id="pizzaCanvas"></canvas>
+      <div class="pizza3d-hint">✦ arraste pra girar ✦</div>
+    </div>
+    <div class="pizza3d-tags">
+      <div class="badge-p">Massa artesanal</div>
+      <div class="badge-p">Queijo generoso</div>
+      <div class="badge-p">Tempero de casa de vó</div>
+      <div class="badge-p">Toque de pimenta</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PERSONALIDADE — deck de cartas ================= -->
+<section class="secao secao-personalidade">
+  <div class="wrap">
+    <div class="pers-header">
+      <h2 class="editorial-title">Personalidade</h2>
+      <p>Quatro traços que definem como a Oxe Pizza fala, aparece e se comporta em qualquer mesa.</p>
+    </div>
+    <div class="pers-grid" id="persGrid">
+      <div class="pers-card">
+        <div class="pc-top"><span>✦</span><span>01</span></div>
+        <div>
+          <h4>Irreverente</h4>
+          <p>Fala o que pensa. Usa o humor nordestino sem medo. Quem se identifica, ama de verdade.</p>
+        </div>
+      </div>
+      <div class="pers-card">
+        <div class="pc-top"><span>✦</span><span>02</span></div>
+        <div>
+          <h4>Acolhedora</h4>
+          <p>Tem aquela energia de casa da vó no Nordeste. Todo mundo se sente bem-vindo na mesa.</p>
+        </div>
+      </div>
+      <div class="pers-card">
+        <div class="pc-top"><span>✦</span><span>03</span></div>
+        <div>
+          <h4>Orgulhosa</h4>
+          <p>Não tem vergonha de ser do Ceará. Pelo contrário — é a primeira coisa que apresenta.</p>
+        </div>
+      </div>
+      <div class="pers-card">
+        <div class="pc-top"><span>✦</span><span>04</span></div>
+        <div>
+          <h4>Direta</h4>
+          <p>Não enrola. A pizza é boa? Oxê, é. Precisa falar mais alguma coisa? Não precisa não.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TOM DE VOZ ================= -->
+<section class="secao secao-voz">
+  <div class="wrap voz-grid">
+    <div class="voz-intro">
+      <div class="kicker-num">04 · Tom de Voz</div>
+      <h2 class="editorial-title">Escreve como conversa, não como cardápio.</h2>
+      <p>Frases curtas, diretas, com sotaque nordestino. Usa "oxê", "cabra", "guerreiro" com naturalidade. Cada palavra tem que ter peso — sem jargão de marketing vazio, sem exagero de emoji.</p>
+    </div>
+    <div class="voz-cards">
+      <div class="voz-card reveal-left">
+        <div class="vc-label">Nordestino</div>
+        <p>"Quem prova uma vez, não esquece. Isso é fato, cabra."</p>
+      </div>
+      <div class="voz-card reveal-left">
+        <div class="vc-label">Confiante</div>
+        <p>"Oxe, você ainda não chamou a Oxe Pizza pro seu evento?"</p>
+      </div>
+      <div class="voz-card reveal-left">
+        <div class="vc-label">Direta</div>
+        <p>"Pizza de evento. Ponto. A concorrência é o esquecimento."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMO FUNCIONA ================= -->
+<section class="secao secao-comofunciona">
+  <div class="wrap">
+    <div class="cf-header">
+      <div class="kicker-num">05 · Como Funciona</div>
+      <h2 class="editorial-title">Do "oxê, vamos fechar" até a última fatia.</h2>
+      <p>Sem burocracia, sem cardápio complicado. É só chamar e a gente resolve o resto pro seu evento.</p>
+    </div>
+    <div class="cf-passos">
+      <div class="cf-passo">
+        <div class="cf-num">01</div>
+        <h3>Chama no zap</h3>
+        <p>Manda a data, o endereço e quantas pessoas vão estar no evento. A gente responde na hora.</p>
+      </div>
+      <div class="cf-passo">
+        <div class="cf-num">02</div>
+        <h3>Fecha o combo</h3>
+        <p>Escolhe o tamanho do rodízio e os sabores. Cabe em casamento, aniversário, formatura ou confraternização.</p>
+      </div>
+      <div class="cf-passo">
+        <div class="cf-num">03</div>
+        <h3>A gente monta lá</h3>
+        <p>Chegamos com forno, massa e equipe própria. Tudo assado na hora, no seu evento.</p>
+      </div>
+      <div class="cf-passo">
+        <div class="cf-num">04</div>
+        <h3>Rodízio à vontade</h3>
+        <p>Fatia quentinha circulando até todo mundo dizer "tô satisfeito, cabra".</p>
+      </div>
+    </div>
+    <div class="cf-cta">
+      <a href="https://wa.me/5585981120788?text=Oxe!%20Quero%20fazer%20um%20or%C3%A7amento%20pro%20meu%20evento." target="_blank" rel="noopener" class="btn-oxe solido" style="background:var(--laranja);border-color:var(--laranja);color:var(--preto-sertao);">Pedir Orçamento</a>
+      <p>resposta rápida no WhatsApp</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CARROSSEL 3D ================= -->
+<section class="secao secao-carrossel" id="carrossel">
+  <div class="wrap">
+    <div class="carr-header">
+      <div class="kicker-num">06 · Aplicação · Instagram</div>
+      <h2 class="editorial-title">Estrutura Padrão de Carrossel</h2>
+      <p>Assim que a @oxepizzafortaleza conta uma história no feed — cada slide com sua função.</p>
+    </div>
+    <div class="carr-stage" id="carrStage">
+      <div class="carr-card" data-i="0" style="background:#150E05;color:#F9EED1;">
+        <div class="cc-top"><span>Capa</span><span>01 / 05</span></div>
+        <h4>Oxê! A pizza que é oxê!</h4>
+        <div class="cc-bottom">gancho · headline de impacto</div>
+      </div>
+      <div class="carr-card" data-i="1" style="background:#E8620A;color:#150E05;">
+        <div class="cc-top"><span>Sertão</span><span>02 / 05</span></div>
+        <h4>Da origem ao evento</h4>
+        <div class="cc-bottom">storytelling · contexto</div>
+      </div>
+      <div class="carr-card" data-i="2" style="background:#F9EED1;color:#150E05;">
+        <div class="cc-top"><span>Pizza</span><span>03 / 05</span></div>
+        <h4>Diferenciais & ingredientes</h4>
+        <div class="cc-bottom">produto</div>
+      </div>
+      <div class="carr-card" data-i="3" style="background:#F5C200;color:#150E05;">
+        <div class="cc-top"><span>Volta</span><span>04 / 05</span></div>
+        <h4>Humor nordestino</h4>
+        <div class="cc-bottom">prova social</div>
+      </div>
+      <div class="carr-card" data-i="4" style="background:#150E05;color:#F9EED1;">
+        <div class="cc-top"><span>Fome!</span><span>05 / 05</span></div>
+        <h4>Chama a Oxe pro seu evento</h4>
+        <div class="cc-bottom">cta · chamada final</div>
+      </div>
+    </div>
+    <div class="carr-nav" id="carrNav"></div>
+  </div>
+</section>
+
+<!-- ================= MANIFESTO ================= -->
+<section class="secao-manifesto" id="manifesto">
+  <p class="manifesto-txt">
+    <span class="manifesto-linha">Pizza boa não precisa de cardápio.</span><br>
+    <span class="manifesto-linha">Precisa de <span class="laranja">momento certo.</span></span><br><br>
+    <span class="manifesto-linha">A Oxe Pizza não tá no app.</span><br>
+    <span class="manifesto-linha">Não tem mesa reservada.</span><br><br>
+    <span class="manifesto-linha">Somos do Ceará. Somos do sertão.</span><br>
+    <span class="manifesto-linha">Somos <span class="amarelo">garra, tempero e amor.</span></span><br><br>
+    <span class="manifesto-linha">Quem prova, volta. <span class="laranja">Fim.</span></span>
+  </p>
+</section>
+
+<!-- ================= CTA / FOOTER ================= -->
+<section class="secao-cta">
+  <div class="wrap">
+    <h2 class="display-title cta-titulo">Bora chamar<br>a Oxe pro evento?</h2>
+    <p class="cta-sub">@oxepizzafortaleza · (85) 98112-0788 · Fortaleza · CE · Brasil</p>
+    <div class="cta-botoes">
+      <a href="https://instagram.com/oxepizzafortaleza" target="_blank" rel="noopener" class="btn-oxe solido">Ver Instagram</a>
+      <a href="https://wa.me/5585981120788?text=Oxe!%20Quero%20saber%20mais%20sobre%20a%20pizza%20de%20evento." target="_blank" rel="noopener" class="btn-oxe linha">Chamar no WhatsApp</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Oxe Pizza · Fortaleza, Ceará</p>
+    <div class="footer-social">
+      <a href="https://instagram.com/oxepizzafortaleza" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/5585981120788" target="_blank" rel="noopener">WhatsApp · (85) 98112-0788</a>
+    </div>
+    <p class="creditos">feito com orgulho nordestino</p>
+  </footer>
+</section>
+
+<a href="https://wa.me/5585981120788?text=Oxe!%20Quero%20saber%20mais%20sobre%20a%20pizza%20de%20evento." target="_blank" rel="noopener" class="whats-float" aria-label="Chamar no WhatsApp">
+  <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9 20.5C9 20.5 11 22 15.5 22C21 22 24.5 18 24.5 13.5C24.5 9 21 6 16.5 6C11.5 6 8.5 9.5 8.5 13.5C8.5 15.3 9.2 16.7 9.8 17.6L8.5 22L9 20.5Z" stroke="#150E05" stroke-width="1.8" stroke-linejoin="round"/>
+    <path d="M13.2 12.3C13.2 12.9 13.9 14.3 14.1 14.6C14.3 14.9 15.6 16.9 17.7 17.6C19.6 18.2 19.9 17.9 20.2 17.6C20.5 17.3 20.7 16.5 20.6 16.2C20.5 15.9 18.9 15.1 18.6 15C18.3 14.9 18.1 14.9 17.9 15.2C17.7 15.5 17.2 16.1 17 16.3C16.8 16.5 16.6 16.5 16.3 16.4C15.9 16.2 14.9 15.8 13.9 14.8C13.1 14 12.9 13.6 12.7 13.3C12.6 13.1 12.7 12.9 12.9 12.7C13.4 12.2 13.5 12 13.5 11.7C13.5 11.4 13.5 11 13.3 10.8C13 10.5 12.6 10.1 12.3 10.1C12.1 10.1 11.9 10.1 11.7 10.1C11.4 10.1 11 10.3 10.8 10.6C10.6 10.9 10.1 11.4 10.1 12.4C10.1 13.4 10.9 14.4 11 14.5" stroke="#150E05" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
